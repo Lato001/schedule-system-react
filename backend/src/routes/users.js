@@ -1,9 +1,15 @@
 const {Router}  = require('express');
 const router = Router();
 
-router.route('/').get((req, res) => res.send('Users Home'));
+const {getUsers, getUserById, createUser, updateUser, deleteUser} = require('../controllers/users.controller');
 
+router.route('/')
+.get(getUsers)
+.post(createUser);
 
-router.route('/:id').get((req, res) => res.send('User: ' + req.params.id));
+router.route('/:id')
+.get(getUserById)
+.put(updateUser)
+.delete(deleteUser);
 
 module.exports = router;
