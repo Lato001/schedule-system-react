@@ -10,14 +10,19 @@ adminController.getUsers = async  (req, res) =>
 
 }
 
+adminController.getUserById = async  (req, res) => 
+{
+  try {
+    const id = req.params._id;
+    const user = await User.findById(id);
+    res.json(user);
+  } catch (error) {res.status(505).json({message:error.message}); }
+}
 
-//adminController.getUserById = (req, res) => res.json({ title: 'User ...' });
-
-//Register User
+//USER POST
 adminController.registerUser = async (req, res) => {
     try {
-          const {name, email, phone, password, role, is_active } = req.body;
-    
+    const {name, email, phone, password, role, is_active } = req.body;
     user = new User({
       name,
       email,
@@ -25,12 +30,10 @@ adminController.registerUser = async (req, res) => {
       password,
       role: role || 'client'
     });
-
     await user.save();
 
     res.status(201).json({
       message: 'Usuario registrado exitosamente',
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -41,13 +44,42 @@ adminController.registerUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-    }
-    
-
+  }
 //USERS PUT
-//adminController.updateUser = (req, res) => res.json({ message: 'User was updated' });
+adminController.updateUser = async (req, res) =>{
+
+  const {name, email, phone,role,is_active } = req.body;
+  userId = req.params._id;
+  try {
+    const user = await User.findByIdAndUpdate(userId, {
+      name,
+      email,
+      phone,
+      role,
+      is_active
+    });
+  
+    res.json({message: `User ${user.name} was Updated` })
+  } catch (error) {
+
+    res.status(505).json({ error: error.message });
+  }
+
+} ;
 
 //USERS DELETE
-//adminController.deleteUser = (req, res) => res.json({ message: 'User was deleted' });
-
+adminController.deleteUser = async  (req, res) => 
+  {
+    try {
+      id = req.params._id;
+      user = await User.findByIdAndUpdate(
+      id,
+      { $set: { is_active: false } }
+    );
+    (user.is_active?res.json({message: `The user ${user.name} was deleted sucessfully!`}) : res.status(404).json({ message: "user not found" }));
+    } catch (error) {
+      
+      res.status(500).json({ message: "error delete in delete process" });
+    }
+}
 module.exports = adminController;
