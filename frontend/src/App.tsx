@@ -7,7 +7,9 @@ function App() {
     <>
       <Navbar></Navbar>
       <Routes>
+        <Route path="/" element={"Home"} />
         <Route path="/users" element={<UsersPage />} />
+        <Route path="/turns" element={"Turns"} />
       </Routes>
     </>
   );

@@ -3,7 +3,8 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  role: 'barber' | 'admin' | 'user';
+  password: string;
+  role: 'barber' | 'admin' | 'client';
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
