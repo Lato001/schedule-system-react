@@ -6,7 +6,7 @@ export default function CreateUserPage() {
   return (
     <div>
       <Link to="/users">
-        <Button label="Go Back" />
+        <Button text="Go Back" />
       </Link>
       <div className="flex justify-center mt-20">
         <Form></Form>;

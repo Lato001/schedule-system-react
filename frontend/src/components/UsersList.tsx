@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import type { User } from "../types/User";
+import Button from "./Button";
 
 const UsersList = () => {
   const [users, setUsers] = useState<User[]>();
@@ -21,11 +22,12 @@ const UsersList = () => {
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-gray-200">
-            <th className="border px-4 py-2">Nombre</th>
+            <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">Email</th>
-            <th className="border px-4 py-2">Teléfono</th>
-            <th className="border px-4 py-2">Rol</th>
-            <th className="border px-4 py-2">Activo?</th>
+            <th className="border px-4 py-2">Phone</th>
+            <th className="border px-4 py-2">Role</th>
+            <th className="border px-4 py-2">isActive?</th>
+            <th className="border px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +39,10 @@ const UsersList = () => {
               <td className="border px-4 py-2">{user.role}</td>
               <td className="border px-4 py-2">
                 {user.isActive ? "Sí" : "No"}
+              </td>
+              <td className="border px-2 py-2 ">
+                <Button text="Editar" className=" mr-2" />
+                <Button text="Eliminar" className="bg-red-900 text-white" />
               </td>
             </tr>
           ))}

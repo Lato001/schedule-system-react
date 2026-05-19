@@ -7,7 +7,7 @@ export default function UsersPage() {
     <div className=" relative p-4 rounded-md">
       <div className=" absolute top-8 right-12">
         <Link to="/create-user">
-          <Button label="Add User" />
+          <Button text="Add User" className="bg-green-600 text-white" />
         </Link>
       </div>
       <div className="">
