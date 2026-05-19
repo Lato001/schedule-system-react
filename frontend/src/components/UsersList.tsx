@@ -13,7 +13,7 @@ const UsersList = () => {
       setUsers(data);
     }
     loadUsers();
-  }, []);
+  }, [users]);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">

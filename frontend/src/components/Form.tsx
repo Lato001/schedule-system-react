@@ -39,8 +39,9 @@ const RegisterForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 p-6 bg-gray-100 rounded-lg shadow-md w-80"
+      className="flex flex-col gap-4 p-6 bg-gray-100 rounded-lg shadow-md w-80 h-90"
     >
+      <h1 className="">Create User</h1>
       <input
         type="text"
         name="name"
@@ -76,7 +77,7 @@ const RegisterForm: React.FC = () => {
 
       <button
         type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
+        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-4 rounded-lg"
       >
         Registrarse
       </button>
