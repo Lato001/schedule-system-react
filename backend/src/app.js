@@ -12,7 +12,7 @@ app.use(express.json());
 
 //routes
 //app.use('/api/users', require('./routes/users'));
-app.use('/api/admin/', require('./routes/adminRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 //app.use('/api/turns', require('./routes/turns'));
 
 

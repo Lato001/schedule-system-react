@@ -1,16 +1,18 @@
-const adminController = {};
+const usersController = {};
 const User = require('../models/User');
 
-//USERS GET
 
-adminController.getUsers = async  (req, res) => 
+
+
+//USERS GET
+usersController.getUsers = async  (req, res) => 
 {
     const users = await User.find();
     res.json(users);
 
 }
 
-adminController.getUserById = async  (req, res) => 
+usersController.getUserById = async  (req, res) => 
 {
   try {
     const id = req.params._id;
@@ -20,7 +22,7 @@ adminController.getUserById = async  (req, res) =>
 }
 
 //USER POST
-adminController.registerUser = async (req, res) => {
+usersController.registerUser = async (req, res) => {
     try {
     const {name, email, phone, password, role, is_active } = req.body;
     user = new User({
@@ -46,7 +48,7 @@ adminController.registerUser = async (req, res) => {
     }
   }
 //USERS PUT
-adminController.updateUser = async (req, res) =>{
+usersController.updateUser = async (req, res) =>{
 
   const {name, email, phone,role,is_active } = req.body;
   userId = req.params._id;
@@ -68,7 +70,7 @@ adminController.updateUser = async (req, res) =>{
 } ;
 
 //USERS DELETE
-adminController.deleteUser = async  (req, res) => 
+usersController.deleteUser = async  (req, res) => 
   {
     try {
       id = req.params._id;
@@ -82,4 +84,4 @@ adminController.deleteUser = async  (req, res) =>
       res.status(500).json({ message: "error delete in delete process" });
     }
 }
-module.exports = adminController;
+module.exports = usersController;
