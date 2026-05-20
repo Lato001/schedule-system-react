@@ -1,16 +1,15 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import type { User } from "../types/User";
 import Button from "./Button";
+import { Link } from "react-router-dom";
+import { getUsers } from "../api/userService";
 
 const UsersList = () => {
   const [users, setUsers] = useState<User[]>();
 
   useEffect(() => {
     async function loadUsers() {
-      const data = await axios
-        .get("http://localhost:5001/api/admin/users")
-        .then((res) => res.data);
+      const data = await getUsers();
       setUsers(data);
     }
     loadUsers();
@@ -32,7 +31,7 @@ const UsersList = () => {
         </thead>
         <tbody>
           {users?.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100">
+            <tr key={user._id} className="hover:bg-gray-100">
               <td className="border px-4 py-2">{user.name}</td>
               <td className="border px-4 py-2">{user.email}</td>
               <td className="border px-4 py-2">{user.phone}</td>
@@ -41,7 +40,9 @@ const UsersList = () => {
                 {user.isActive ? "Sí" : "No"}
               </td>
               <td className="border px-2 py-2 ">
-                <Button text="Editar" className=" mr-2" />
+                <Link to={`/edit-user/${user._id}`}>
+                  <Button text="Editar" className=" mr-2" />
+                </Link>
                 <Button text="Eliminar" className="bg-red-900 text-white" />
               </td>
             </tr>
