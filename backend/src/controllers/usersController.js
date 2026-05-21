@@ -59,7 +59,7 @@ usersController.loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    const payload = { id: user._id, email: user.email };
+    const payload = { id: user._id, email: user.email, role:user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
