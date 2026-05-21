@@ -1,24 +1,18 @@
 const {Router}  = require('express');
 const router = Router();
 const {verifyToken} = require('../middlewares/authMiddleware');
-const {getUsers, getUserById,registerUser,loginUser, deleteUser, updateUser, getCryptInfo } = require('../controllers/usersController');
+const {getUsers, getUserById,createUser, registerUser , loginUser, deleteUser, updateUser, getCryptInfo } = require('../controllers/usersController');
 
-
-/*
-.post(createUser);
-
-.get(getUserById)
-.delete(deleteUser);
-*/
 
 router.route('/users')
 .get(getUsers)
-.post(registerUser)
+.post(createUser)
 
 router.route('/login')
 .post(loginUser)
 
-
+router.route('/register')
+.post(registerUser)
 
 router.route("/info")
 .get(verifyToken, getCryptInfo);

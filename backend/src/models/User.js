@@ -10,7 +10,7 @@ const userSchema = new Schema({
     required: [true, 'El email es requerido'],
     unique: true,
     lowercase: true,
-    //match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email inválido']
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email inválido']
   },
   phone: {
     type: String,

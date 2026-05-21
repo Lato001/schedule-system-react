@@ -2,52 +2,79 @@ const usersController = {};
 const { verifyToken } = require('../middlewares/authMiddleware');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
-//const keys = require('./utils/generateToken');
 
-//USERS LOGIN
+
 usersController.getCryptInfo = async (req, res) => {{
-    res.json({message: "The token is valid", user: req.decoded})
+    res.json({message: "The token is valid, MENSAJE ENCRIPTADO"})
 }}
 
 
-usersController.loginUser = async (req, res) => {{
-    if(req.body.user == 'admin' && req.body.password == 'admin123'){
-        const payload = {
-            check : true
-        };
-        token = jwt.sign(payload, "CLAVESECRETA123", {
-            expiresIn: '1h'
-        });
+usersController.registerUser = async (req, res) => {
+  try {
+    const {name, phone, email, password} = req.body
 
-        res.json({
-            message: 'Authentication successful',
-            token: token
-        });
-    } else {
-        res.json({message: "Incorrect username or password"});
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "A User with this Email already exists" });
     }
 
-}};
-
-/*
-
-usersController.loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-  }catch (error) {
-    res.status(500).json({message: 'Error during login process' });
+    const user = new User({
+      name, 
+      email,
+      phone,
+      password: hashedPassword
+    });
+    
+    await user.save();
+    res.status(201).json({
+      message: "User was registered sucessfully",
+      user: {
+        id: user._id,
+        email: user.email
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }
 
-*/
-//USERS GET
+
+usersController.loginUser = async (req, res) => {
+  
+  const {email, password} = req.body;
+  
+  try {
+    //Utilzo +password para hacer el get de la password a la query {en mi db el Select=false}
+    const user = await User.findOne({ email }).select("+password"); 
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+    const payload = { id: user._id, email: user.email };
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+    res.json({
+      message: "Login exitoso",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+        res.status(500).json({ message: "Error en el proceso de login", error: error.message });
+  }};
+
 usersController.getUsers = async  (req, res) => 
 {
     const users = await User.find();
@@ -65,7 +92,7 @@ usersController.getUserById = async  (req, res) =>
 }
 
 //USER POST
-usersController.registerUser = async (req, res) => {
+usersController.createUser = async (req, res) => {
     try {
     const {name, email, phone, password, role, is_active } = req.body;
     user = new User({
