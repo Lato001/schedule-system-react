@@ -1,7 +1,7 @@
 const {Router}  = require('express');
 const router = Router();
-
-const {getUsers, getUserById,registerUser, deleteUser, updateUser } = require('../controllers/usersController');
+const {verifyToken} = require('../middlewares/authMiddleware');
+const {getUsers, getUserById,registerUser,loginUser, deleteUser, updateUser, getCryptInfo } = require('../controllers/usersController');
 
 
 /*
@@ -14,6 +14,15 @@ const {getUsers, getUserById,registerUser, deleteUser, updateUser } = require('.
 router.route('/users')
 .get(getUsers)
 .post(registerUser)
+
+router.route('/login')
+.post(loginUser)
+
+
+
+router.route("/info")
+.get(verifyToken, getCryptInfo);
+
 
 router.route('/users/:_id')
 .get(getUserById)

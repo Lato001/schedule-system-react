@@ -1,7 +1,6 @@
 //IMPORT OF ENVIRONMENT VARIABLES
 require('dotenv').config();
 
-
 const app = require('./app');
 require('./database');
 

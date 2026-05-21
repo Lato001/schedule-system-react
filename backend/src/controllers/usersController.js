@@ -1,9 +1,52 @@
 const usersController = {};
+const { verifyToken } = require('../middlewares/authMiddleware');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken')
+
+//const keys = require('./utils/generateToken');
+
+//USERS LOGIN
+usersController.getCryptInfo = async (req, res) => {{
+    res.json({message: "The token is valid", user: req.decoded})
+}}
 
 
+usersController.loginUser = async (req, res) => {{
+    if(req.body.user == 'admin' && req.body.password == 'admin123'){
+        const payload = {
+            check : true
+        };
+        token = jwt.sign(payload, "CLAVESECRETA123", {
+            expiresIn: '1h'
+        });
 
+        res.json({
+            message: 'Authentication successful',
+            token: token
+        });
+    } else {
+        res.json({message: "Incorrect username or password"});
+    }
 
+}};
+
+/*
+
+usersController.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email, password });
+
+    
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+  }catch (error) {
+    res.status(500).json({message: 'Error during login process' });
+  }
+}
+
+*/
 //USERS GET
 usersController.getUsers = async  (req, res) => 
 {
