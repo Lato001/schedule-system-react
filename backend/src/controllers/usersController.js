@@ -5,11 +5,9 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 
-
 usersController.getCryptInfo = async (req, res) => {{
     res.json({message: "The token is valid, MENSAJE ENCRIPTADO"})
 }}
-
 
 usersController.registerUser = async (req, res) => {
   try {
@@ -48,7 +46,6 @@ usersController.registerUser = async (req, res) => {
 usersController.loginUser = async (req, res) => {
   
   const {email, password} = req.body;
-  
   try {
     //Utilzo +password para hacer el get de la password a la query {en mi db el Select=false}
     const user = await User.findOne({ email }).select("+password"); 
@@ -62,18 +59,25 @@ usersController.loginUser = async (req, res) => {
     const payload = { id: user._id, email: user.email, role:user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
-    });
-    res.json({
-      message: "Login exitoso",
-      token,
-      user: {
-        id: user._id,
-        email: user.email,
-      },
-    });
+    })
+    res.cookie('access_token', token, {
+      httpOnly: true, //
+      sameSite: 'strict', //Solo se puede acceder desde el mismo sitio
+      maxAge: 1000 * 60 * 60  //Validez de una hora
+    }).json({user, token})
+    
+    return res.status(201).json({message: "Login was succesful"})
+
   } catch (error) {
-        res.status(500).json({ message: "Error en el proceso de login", error: error.message });
+       return res.status(500).json({message: "Internal error"});
   }};
+
+  usersController.logoutUser = async (req, res) => {
+    res
+    .clearCookie('access_token')
+    .json({message: "Logout was successfully"})
+
+  }
 
 usersController.getUsers = async  (req, res) => 
 {

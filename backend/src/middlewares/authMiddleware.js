@@ -3,22 +3,32 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = {};
 
 authMiddleware.verifyToken = function (req, res, next) {
-  let token = req.headers["x-access-token"] || req.headers["authorization"];
+  const token = req.cookies['access_token'];
+  console.log(token)
   if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(401).json({message: "Token invalido"})
   }
-
-  if (token.startsWith("Bearer ")) {
-    token = token.slice(7, token.length);
-  }
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // mejor usar process.env.JWT_SECRET
-    req.decoded = decoded;
+    req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Token is not valid" });
+    return res.status(401).json({message: "Token invalido"})
   }
 };
+
+authMiddleware.isLogued = function (req, res, next) {
+  const token = req.cookies['access_token'];
+  if(token){
+    try{
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+      return res.status(200).json({message:"You are already logued", user:decoded});
+    }catch{
+      return next();
+    }
+  }
+  next();
+
+}
 
 module.exports = authMiddleware;
