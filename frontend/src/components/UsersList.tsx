@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { User } from "../types/User";
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import { getUsers } from "../api/userService";
+import { getUsers } from "../api/UserService";
 
 const UsersList = () => {
   const [users, setUsers] = useState<User[]>();
@@ -13,42 +13,77 @@ const UsersList = () => {
       setUsers(data);
     }
     loadUsers();
-  }, [users]);
+  }, []);
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Lista de Usuarios</h2>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Email</th>
-            <th className="border px-4 py-2">Phone</th>
-            <th className="border px-4 py-2">Role</th>
-            <th className="border px-4 py-2">isActive?</th>
-            <th className="border px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users?.map((user) => (
-            <tr key={user._id} className="hover:bg-gray-100">
-              <td className="border px-4 py-2">{user.name}</td>
-              <td className="border px-4 py-2">{user.email}</td>
-              <td className="border px-4 py-2">{user.phone}</td>
-              <td className="border px-4 py-2">{user.role}</td>
-              <td className="border px-4 py-2">
-                {user.isActive ? "Sí" : "No"}
-              </td>
-              <td className="border px-2 py-2 ">
-                <Link to={`/edit-user/${user._id}`}>
-                  <Button text="Editar" className=" mr-2" />
-                </Link>
-                <Button text="Eliminar" className="bg-red-900 text-white" />
-              </td>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-violet-50 text-left">
+              <th className="px-4 py-3 text-xs font-semibold text-violet-900 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-4 py-3 text-xs font-semibold text-violet-900 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-4 py-3 text-xs font-semibold text-violet-900 uppercase tracking-wider">
+                Phone
+              </th>
+              <th className="px-4 py-3 text-xs font-semibold text-violet-900 uppercase tracking-wider">
+                Role
+              </th>
+              <th className="px-4 py-3 text-xs font-semibold text-violet-900 uppercase tracking-wider">
+                Active
+              </th>
+              <th className="px-4 py-3 text-xs font-semibold text-violet-900 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {users?.map((user) => (
+              <tr key={user._id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-4 py-3 text-sm text-gray-900">{user.name}</td>
+                <td className="px-4 py-3 text-sm text-gray-600">{user.email}</td>
+                <td className="px-4 py-3 text-sm text-gray-600">{user.phone}</td>
+                <td className="px-4 py-3">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800 capitalize">
+                    {user.role}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      user.isActive
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {user.isActive ? "Yes" : "No"}
+                  </span>
+                </td>
+                <td className="px-4 py-3 flex items-center gap-2">
+                  <Link to={`/edit-user/${user._id}`}>
+                    <Button text="Edit" variant="secondary" />
+                  </Link>
+                  <Button text="Delete" variant="danger" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {!users && (
+        <div className="text-center py-8 text-gray-400 text-sm">
+          Loading users...
+        </div>
+      )}
+      {users?.length === 0 && (
+        <div className="text-center py-8 text-gray-400 text-sm">
+          No users registered yet.
+        </div>
+      )}
     </div>
   );
 };

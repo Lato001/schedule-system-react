@@ -1,11 +1,11 @@
 export interface User {
-  _id?: number;
+  _id: string;
   name: string;
   email: string;
   phone: string;
-  password: string;
-  role?: 'barber' | 'admin' | 'client';
+  role: 'admin' | 'employee';
+  password?: string;
   isActive?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }

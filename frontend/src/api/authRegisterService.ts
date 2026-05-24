@@ -1,5 +1,5 @@
-import type { UserAuthResponse } from "../types/userAuthResponse";
 import axios from "axios";
+import type { UserAuthResponse } from "../types/UserAuthResponse";
 
 const API_REGISTER_URL = `${import.meta.env.VITE_API_URL}/register`;
 

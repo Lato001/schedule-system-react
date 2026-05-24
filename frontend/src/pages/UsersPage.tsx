@@ -1,17 +1,20 @@
 import UsersList from "../components/UsersList";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 export default function UsersPage() {
   return (
-    <div className=" relative p-4 rounded-md">
-      <div className=" absolute top-8 right-12">
-        <Link to="/create-user">
-          <Button text="Add User" className="bg-green-600 text-white" />
-        </Link>
-      </div>
-      <div className="">
-        <UsersList></UsersList>
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-slate-50">
+      <Navbar />
+      <div className="max-w-5xl mx-auto p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-gray-900">Users</h1>
+          <Link to="/create-user">
+            <Button text="Add user" />
+          </Link>
+        </div>
+        <UsersList />
       </div>
     </div>
   );

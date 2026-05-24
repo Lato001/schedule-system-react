@@ -4,11 +4,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
-
-usersController.getCryptInfo = async (req, res) => {{
-    res.json({message: "The token is valid, MENSAJE ENCRIPTADO"})
-}}
-
 usersController.registerUser = async (req, res) => {
   try {
     const {name, phone, email, password} = req.body
@@ -61,20 +56,37 @@ usersController.loginUser = async (req, res) => {
       expiresIn: "1h",
     })
     res.cookie('access_token', token, {
-      httpOnly: true, //
-      sameSite: 'strict', //Solo se puede acceder desde el mismo sitio
-      maxAge: 1000 * 60 * 60  //Validez de una hora
+      httpOnly: true,
+      sameSite: 'strict',
     }).json({user, token})
-    
-    return res.status(201).json({message: "Login was succesful"})
 
   } catch (error) {
        return res.status(500).json({message: "Internal error"});
   }};
 
+
+usersController.isLogged = function (req, res) {
+  const token = req.cookies['access_token'];
+  if(!token){
+      return res.status(401).json({message: "No hay sesion activa"});
+  }
+    try{
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+      return res.status(200).json({user:decoded});
+    }catch{
+      return res.status(401).json({ message: 'Token inválido o expirado' });
+    }
+
+}
+
+
+
   usersController.logoutUser = async (req, res) => {
-    res
-    .clearCookie('access_token')
+    res.clearCookie('access_token', {
+        httpOnly: true,
+        sameSite: 'strict',
+    })
+    .status(200)
     .json({message: "Logout was successfully"})
 
   }
@@ -99,12 +111,13 @@ usersController.getUserById = async  (req, res) =>
 usersController.createUser = async (req, res) => {
     try {
     const {name, email, phone, password, role, is_active } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
     user = new User({
       name,
       email,
       phone,
-      password,
-      role: role || 'client'
+      password: hashedPassword,
+      role: 'employee'
     });
     await user.save();
 

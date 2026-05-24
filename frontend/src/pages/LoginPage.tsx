@@ -1,6 +1,4 @@
-import { useState } from "react";
-import AuthForm from "../components/authForm";
-
+import LoginForm from "../components/LoginForm";
 export default function LoginPage() {
-  return <AuthForm></AuthForm>;
+  return <LoginForm />;
 }

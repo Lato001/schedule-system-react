@@ -1,7 +1,7 @@
 import axios from "axios";
 import type {User}  from "../types/User";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/admin/users`;
+const API_URL = `${import.meta.env.VITE_API_URL}/users`;
 
 export async function getUsers(): Promise<User[]> {
   const res = await axios.get(API_URL);

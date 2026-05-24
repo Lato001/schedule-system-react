@@ -17,5 +17,7 @@ app.set('port', process.env.PORT);
 app.use(express.urlencoded({extended: false}));
 //ROUTES DEFINITION
 app.use('/', require('./routes/userRoutes'));
+app.use('/', require('./routes/clientRoutes'));
+app.use('/', require('./routes/appointmentRoutes'));
 
 module.exports = app;

@@ -1,11 +1,17 @@
 const {Router}  = require('express');
 const router = Router();
-const {verifyToken, isLogued} = require('../middlewares/authMiddleware');
-const {getUsers, getUserById,createUser, registerUser , loginUser, logoutUser,  deleteUser, updateUser, getCryptInfo } = require('../controllers/usersController');
+const {verifyToken, adminOnly} = require('../middlewares/authMiddleware');
+const {getUsers, getUserById,createUser, registerUser , loginUser,isLogged, logoutUser,  deleteUser, updateUser, getCryptInfo} = require('../controllers/usersController');
+
+
 
 router.route('/login')
-.get(isLogued)
-.post(isLogued, loginUser)
+.post(loginUser)
+
+
+router.route('/authme')
+.get(isLogged)
+
 
 router.route('/logout')
 .post(verifyToken, logoutUser)
@@ -13,14 +19,12 @@ router.route('/logout')
 router.route('/homepage')
 .get(verifyToken, getCryptInfo)
 
-
-
 router.route('/users')
-.get(getUsers)
-.post(createUser)
+.get(verifyToken, getUsers)
+.post(verifyToken, createUser)
 
 router.route('/register')
-.post(registerUser)
+.post(verifyToken, adminOnly, registerUser)
 
 
 router.route("/info")

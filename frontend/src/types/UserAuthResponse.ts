@@ -1,9 +1,5 @@
+import type { User } from "./User";
 export interface UserAuthResponse {
-  message: string;
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    role?: string;
-  };
+  user: User,
+  token : string
 }
