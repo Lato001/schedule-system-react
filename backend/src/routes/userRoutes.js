@@ -33,5 +33,4 @@ router.route('/users/:_id')
 .delete(deleteUser)
 .put(updateUser)
 
-
 module.exports = router;

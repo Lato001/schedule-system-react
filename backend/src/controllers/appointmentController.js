@@ -12,7 +12,6 @@ appointmentController.getAppointments = async (req, res) => {
     }
     const appointments = await Appointment.find(filter)
       .populate('employee_id', 'name email')
-      .populate('client_id', 'name phone')
       .sort({ date: -1, time: -1 });
     res.json(appointments);
   } catch (error) {
@@ -32,8 +31,7 @@ appointmentController.createAppointment = async (req, res) => {
     });
     await appointment.save();
     const populated = await Appointment.findById(appointment._id)
-      .populate('employee_id', 'name email')
-      .populate('client_id', 'name phone');
+      .populate('employee_id', 'name email');
     res.status(201).json(populated);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -52,8 +50,7 @@ appointmentController.updateAppointmentStatus = async (req, res) => {
       { status },
       { new: true }
     )
-      .populate('employee_id', 'name email')
-      .populate('client_id', 'name phone');
+      .populate('employee_id', 'name email');
     if (!appointment) {
       return res.status(404).json({ message: 'Turno no encontrado' });
     }

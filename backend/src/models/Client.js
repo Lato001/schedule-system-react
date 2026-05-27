@@ -9,9 +9,9 @@ const ClientSchema = new Schema({
     type: String,
     required: [true, 'El teléfono del cliente es requerido']
   },
-  email:{
+  email: {
     type: String,
-    required: [true, 'El email del cliente es requerido']
+    default: ''
   }
 }, {timestamps: true});
 

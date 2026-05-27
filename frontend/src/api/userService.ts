@@ -1,24 +1,24 @@
 import axios from "axios";
-import type {User}  from "../types/User";
+import type {UserInfo}  from "../types/";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/users`;
 
-export async function getUsers(): Promise<User[]> {
+export async function getUsers(): Promise<UserInfo[]> {
   const res = await axios.get(API_URL);
   return res.data;
 }
 
-export async function getUserById(id: string): Promise<User> {
+export async function getUserById(id: string): Promise<UserInfo> {
   const res = await axios.get(`${API_URL}/${id}`);
   return res.data;
 }
 
-export async function createUser(user: User) {
+export async function createUser(user: UserInfo) {
   const res = await axios.post(API_URL, user);
   return res.data;
 }
 
-export async function updateUser(id: string, user: User) {
+export async function updateUser(id: string, user: UserInfo) {
   const res = await axios.put(`${API_URL}/${id}`, user);
   return res.data;
 }
