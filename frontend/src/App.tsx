@@ -17,14 +17,16 @@ function App() {
         <BrowserRouter>
           <RoutesNotFound>
             <Route path={PublicRoutes.LOGIN} element={<Login />} />
-            <Route path="/" element={<Navigate to={PrivateRoutes.PRIVATE} />} />
-
             <Route element={<AuthGuard />}>
               <Route
                 path={`${PrivateRoutes.PRIVATE}/*`}
                 element={<Private />}
               />
             </Route>
+            <Route
+              path="*"
+              element={<Navigate to={`/${PublicRoutes.LOGIN}`} replace />}
+            />
           </RoutesNotFound>
         </BrowserRouter>
       </Provider>

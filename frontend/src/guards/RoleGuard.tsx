@@ -11,6 +11,6 @@ export function RoleGuard({ role }: Props) {
   return userState.role && userState.role === role ? (
     <Outlet></Outlet>
   ) : (
-    <Navigate replace to={PrivateRoutes.PRIVATE}></Navigate>
+    <Navigate to={`/${PrivateRoutes.HOME}`} replace></Navigate>
   );
 }

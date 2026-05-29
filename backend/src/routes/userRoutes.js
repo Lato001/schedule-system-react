@@ -1,7 +1,7 @@
 const {Router}  = require('express');
 const router = Router();
 const {verifyToken, adminOnly} = require('../middlewares/authMiddleware');
-const {getUsers, getUserById,createUser, registerUser , loginUser,isLogged, logoutUser,  deleteUser, updateUser} = require('../controllers/usersController');
+const {getUsers, getUserById,createUser, registerUser , loginUser, verifySessionService, logoutUser,  deleteUser, updateUser} = require('../controllers/usersController');
 
 
 
@@ -10,7 +10,7 @@ router.route('/login')
 
 
 router.route('/authme')
-.get(isLogged)
+.get(verifySessionService)
 
 
 router.route('/logout')

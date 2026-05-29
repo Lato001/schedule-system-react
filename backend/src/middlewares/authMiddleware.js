@@ -4,7 +4,6 @@ const authMiddleware = {};
 
 authMiddleware.verifyToken = function (req, res, next) {
   const token = req.cookies['access_token'];
-  //console.log(token)
   if (!token) {
     return res.status(401).json({message: "Token invalido"})
   }

@@ -4,19 +4,27 @@ import RoutesNotFound from "../../utilities/RoutesNotFound";
 import { lazy } from "react";
 import { RoleGuard } from "../../guards";
 import { Roles } from "../../types";
+import { Navbar } from "../../components";
 
 const Home = lazy(() => import("./Home/Home"));
-const Dashboard = lazy(() => import("./UsersPage/UsersPage"));
-
+const Users = lazy(() => import("./UsersPage/UsersPage"));
+const Clients = lazy(() => import("./ClientsPage/ClientsPage"));
+const Appointments = lazy(() => import("./AppointmentsPage/AppointmentsPage"));
 function Private() {
   return (
     <>
+      <Navbar />
       <RoutesNotFound>
         <Route path="/" element={<Navigate to={PrivateRoutes.HOME} />} />
-        <Route path={PrivateRoutes.HOME} element={<Home />}></Route>
+        <Route path="*" element={<Navigate to={`/${PrivateRoutes.HOME}`} />} />
+
+        {/*Puedo acceder desde Employees */}
+        <Route path={PrivateRoutes.HOME} element={<Home />} />
+        <Route path={PrivateRoutes.CLIENTS} element={<Clients />} />
+        <Route path={PrivateRoutes.APPOINTMENTS} element={<Appointments />} />
 
         <Route element={<RoleGuard role={Roles.ADMIN}></RoleGuard>}>
-          <Route path={PrivateRoutes.DASHBOARD} element={<Dashboard />}></Route>
+          <Route path={PrivateRoutes.USERS} element={<Users />} />
         </Route>
       </RoutesNotFound>
     </>

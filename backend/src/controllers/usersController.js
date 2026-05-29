@@ -58,14 +58,14 @@ usersController.loginUser = async (req, res) => {
     res.cookie('access_token', token, {
       httpOnly: true,
       sameSite: 'strict',
-    }).json({user, token})
+    }).status(200).json({message: "ok"})
 
   } catch (error) {
-       return res.status(500).json({message: "Internal error"});
+       return res.status(401).json({message: "Invalid Credentials"});
   }};
 
 
-usersController.isLogged = function (req, res) {
+usersController.verifySessionService = function (req, res) {
   const token = req.cookies['access_token'];
   if(!token){
       return res.status(401).json({message: "No hay sesion activa"});

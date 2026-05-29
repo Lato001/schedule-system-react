@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { loginService } from "../../../api";
-import { useAppDispatch } from "../../../redux/hooks";
-import { createUser } from "../../../redux/states/user";
+import { loginService } from "../../../services";
+import { useAppSelector } from "../../../redux/hooks";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { PrivateRoutes } from "../../../routes";
 
 function Field({
@@ -42,19 +41,22 @@ function Field({
 }
 
 export default function Login() {
-  const dispatch = useAppDispatch();
-  const [error, setError] = useState("");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const userState = useAppSelector((store) => store.user);
+
+  if (userState.id) {
+    return <Navigate replace to={`/${PrivateRoutes.PRIVATE}`} />;
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     try {
-      const result = await loginService(email, password);
-      dispatch(createUser(result.user));
+      await loginService(email, password);
       navigate(`/${PrivateRoutes.PRIVATE}`, { replace: true });
     } catch {
       setError("Invalid credentials. Please try again.");

@@ -1,5 +1,8 @@
 export const PrivateRoutes = {
     PRIVATE: 'private',
     HOME: 'homepage',
-    DASHBOARD: 'dashboard'
+    DASHBOARD: 'dashboard',
+    USERS: 'users',
+    CLIENTS: 'clients',
+    APPOINTMENTS : 'apppointments'
 }

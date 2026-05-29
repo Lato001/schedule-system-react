@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 import type { Client } from "../../types";
-import { getClients } from "../../api";
+import { getClients } from "../../services";
 
-interface Props {
-  refreshTrigger?: number;
-}
-
-export function ClientsList({ refreshTrigger }: Props) {
+export function ClientsList() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getClients()
-      .then(setClients)
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [refreshTrigger]);
+    const loadClients = async () => {
+      try {
+        const clients = await getClients();
+        setClients(clients);
+        setLoading(false);
+      } catch (error) {}
+    };
+    loadClients();
+  }, []);
 
   if (loading) {
     return (
