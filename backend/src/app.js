@@ -1,16 +1,23 @@
 const express = require('express')
+const cors = require('cors');
 const app = express();
+const cookieParser = require("cookie-parser")
 
-//Settings
-app.set('port', process.env.PORT || 4000);
+app.use(express.json());
 
-//middlewares
-//app.use(express.json());
+//Permisos para peticiones desde mi frontend
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
+app.use(cookieParser());
 
-//routes
-//app.use('/api/users', require('./routes/users'));
-
-
-
+//SETTINGS
+app.set('port', process.env.PORT);
+app.use(express.urlencoded({extended: false}));
+//ROUTES DEFINITION
+app.use('/', require('./routes/userRoutes'));
+app.use('/', require('./routes/clientRoutes'));
+app.use('/', require('./routes/appointmentRoutes'));
 
 module.exports = app;
